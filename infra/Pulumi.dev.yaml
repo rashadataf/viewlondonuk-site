@@ -1,0 +1,14 @@
+config:
+  viewlondonuk:ADMIN_EMAIL:
+    secure: AAABAIujaR0ZbqIyzVM9zlf0I9pF+vt0qajkRUhDO+731xSCTH+CzseGO/Gj4Zc1jW7XSA==
+  viewlondonuk:APP_PORT: "3000"
+  viewlondonuk:DOMAIN_NAME: localhost
+  viewlondonuk:ENABLE_TLS: "false"
+  viewlondonuk:PROTOCOL: http
+  viewlondonuk:ROUTER_ENTRYPOINT: web
+  viewlondonuk:SITE_BUILD_CONTEXT: ../site
+  viewlondonuk:SITE_IMAGE_NAME: viewlondonuk/site
+  viewlondonuk:SITE_IMAGE_TAG: latest
+  viewlondonuk:SITE_WORKDIR_PATH: /site
+  viewlondonuk:SITE_BUILD_PHASE_TARGET: development
+  viewlondonuk:CONTACT_EMAIL: contact@viewlondonuk.com

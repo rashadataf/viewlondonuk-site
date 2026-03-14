@@ -26,12 +26,12 @@
 
 **Purpose**: Initialize the Next.js project, Docker setup, and local development environment
 
-- [ ] T001 Initialize Next.js 15 project with TypeScript, React 19, and Tailwind CSS 4 in site/package.json
-- [ ] T002 Configure TypeScript compiler options in site/tsconfig.json
-- [ ] T003 [P] Configure Next.js with `output: 'standalone'` in site/next.config.ts
-- [ ] T004 [P] Configure Tailwind CSS with brand colour palette and typography in site/tailwind.config.ts
-- [ ] T005 Create multi-stage Dockerfile (base → development → production) in site/Dockerfile
-- [ ] T006 Create local development docker-compose.yaml at repository root with Traefik + Next.js services
+- [x] T001 Initialize Next.js 15 project with TypeScript, React 19, and Tailwind CSS 4 in site/package.json
+- [x] T002 Configure TypeScript compiler options in site/tsconfig.json
+- [x] T003 [P] Configure Next.js with `output: 'standalone'` in site/next.config.ts
+- [x] T004 [P] Configure Tailwind CSS with brand colour palette and typography in site/tailwind.config.ts
+- [x] T005 Create multi-stage Dockerfile (base → development → production) in site/Dockerfile
+- [x] T006 Create local development docker-compose.yaml at repository root with Traefik + Next.js services
 
 ---
 
@@ -41,10 +41,10 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Create root layout with HTML shell, viewport meta, and global Tailwind styles in site/app/layout.tsx
-- [ ] T008 Create Pulumi YAML project definition in infra/Pulumi.yaml with config schema for domain, contactEmail, acmeEmail, buildTarget, sitePort, hostIp, sshUser, sshPrivateKey
-- [ ] T009 [P] Create dev stack config file in infra/Pulumi.dev.yaml with local development values (viewlondonuk.local, development target)
-- [ ] T010 [P] Create prod stack config file in infra/Pulumi.prod.yaml with production placeholder values
+- [x] T007 Create root layout with HTML shell, viewport meta, and global Tailwind styles in site/app/layout.tsx
+- [x] T008 Create Pulumi YAML project definition in infra/Pulumi.yaml with config schema for domain, contactEmail, acmeEmail, buildTarget, sitePort, hostIp, sshUser, sshPrivateKey
+- [x] T009 [P] Create dev stack config file in infra/Pulumi.dev.yaml with local development values (viewlondonuk.local, development target)
+- [x] T010 [P] Create prod stack config file in infra/Pulumi.prod.yaml with production placeholder values
 
 **Checkpoint**: Project skeleton ready — Next.js builds, Docker image builds for both targets, Pulumi project initialised. User story implementation can now begin.
 
@@ -58,13 +58,13 @@
 
 ### Implementation for User Story 1
 
-- [ ] T011 [US1] Build the Coming Soon page component displaying brand name, heading, tagline, and contact email in site/app/page.tsx
-- [ ] T012 [US1] Read CONTACT_EMAIL from server-side environment variable in site/app/page.tsx and render as mailto link
-- [ ] T013 [P] [US1] Add responsive styles for 320 px–2560 px viewports using Tailwind utility classes in site/app/page.tsx
-- [ ] T014 [P] [US1] Add SEO metadata (title, description, Open Graph tags including og:image) via Next.js Metadata API in site/app/layout.tsx
-- [ ] T015 [P] [US1] Add placeholder Open Graph image in site/public/og-image.png
-- [ ] T016 [P] [US1] Add favicon in site/public/favicon.ico
-- [ ] T017 [US1] Create branded 404 page with ViewLondon UK branding and link back to / in site/app/not-found.tsx
+- [x] T011 [US1] Build the Coming Soon page component displaying brand name, heading, tagline, and contact email in site/app/page.tsx
+- [x] T012 [US1] Read CONTACT_EMAIL from server-side environment variable in site/app/page.tsx and render as mailto link
+- [x] T013 [P] [US1] Add responsive styles for 320 px–2560 px viewports using Tailwind utility classes in site/app/page.tsx
+- [x] T014 [P] [US1] Add SEO metadata (title, description, Open Graph tags including og:image) via Next.js Metadata API in site/app/layout.tsx
+- [x] T015 [P] [US1] Add placeholder Open Graph image in site/public/og-image.png
+- [x] T016 [P] [US1] Add favicon in site/public/favicon.ico (implemented as site/app/icon.svg)
+- [x] T017 [US1] Create branded 404 page with ViewLondon UK branding and link back to / in site/app/not-found.tsx
 
 **Checkpoint**: Coming Soon page renders with all content, is responsive, has SEO metadata, and unknown paths show a branded 404. Story is independently testable via `docker compose up`.
 
@@ -78,12 +78,12 @@
 
 ### Implementation for User Story 2
 
-- [ ] T018 [US2] Create Traefik static configuration with entrypoints (http:80, https:443), HTTP→HTTPS redirect, and ACME Let's Encrypt certificate resolver in infra/docker-compose.yaml.tpl (Traefik service section)
-- [ ] T019 [US2] Add Docker labels on the Next.js service for Traefik routing: Host rule for apex + www, TLS certresolver, www→apex redirectregex middleware in infra/docker-compose.yaml.tpl (site service section)
-- [ ] T020 [US2] Add Pulumi YAML resource to template docker-compose.yaml.tpl with stack config values (domain, acmeEmail, sitePort, imageTag) and copy to remote VPS via command:remote:CopyToRemoteFile in infra/Pulumi.yaml
-- [ ] T021 [US2] Add Pulumi YAML resource to run `docker compose up -d` on remote VPS via command:remote:Command in infra/Pulumi.yaml
-- [ ] T022 [US2] Add named Docker volume for ACME certificate persistence (letsencrypt:/letsencrypt) in infra/docker-compose.yaml.tpl
-- [ ] T023 [US2] Update local development docker-compose.yaml to mirror production Traefik routing topology with viewlondonuk.local host rules (no ACME, HTTP only)
+- [x] T018 [US2] Create Traefik static configuration with entrypoints (http:80, https:443), HTTP→HTTPS redirect, and ACME Let's Encrypt certificate resolver in infra/docker-compose.yaml.tpl (Traefik service section)
+- [x] T019 [US2] Add Docker labels on the Next.js service for Traefik routing: Host rule for apex + www, TLS certresolver, www→apex redirectregex middleware in infra/docker-compose.yaml.tpl (site service section)
+- [x] T020 [US2] Add Pulumi YAML resource to template docker-compose.yaml.tpl with stack config values (domain, acmeEmail, sitePort, imageTag) and copy to remote VPS via command:remote:CopyToRemoteFile in infra/Pulumi.yaml
+- [x] T021 [US2] Add Pulumi YAML resource to run `docker compose up -d` on remote VPS via command:remote:Command in infra/Pulumi.yaml
+- [x] T022 [US2] Add named Docker volume for ACME certificate persistence (letsencrypt:/letsencrypt) in infra/docker-compose.yaml.tpl
+- [x] T023 [US2] Update local development docker-compose.yaml to mirror production Traefik routing topology with viewlondonuk.local host rules (no ACME, HTTP only)
 
 **Checkpoint**: Production infrastructure is fully defined in Pulumi YAML. `pulumi up --stack prod` deploys Traefik + Next.js with TLS. Local dev mirrors the routing topology via `docker compose up`.
 
@@ -97,8 +97,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T024 [US3] Ensure the mailto link in site/app/page.tsx has an accessible label (aria-label or visible link text), is focusable, and is reachable via keyboard tab order
-- [ ] T025 [US3] Verify email link renders the correct CONTACT_EMAIL value from the environment variable, with fallback to a sensible default if unset, in site/app/page.tsx
+- [x] T024 [US3] Ensure the mailto link in site/app/page.tsx has an accessible label (aria-label or visible link text), is focusable, and is reachable via keyboard tab order
+- [x] T025 [US3] Verify email link renders the correct CONTACT_EMAIL value from the environment variable, with fallback to a sensible default if unset, in site/app/page.tsx
 
 **Checkpoint**: Email link is accessible, keyboard-navigable, and displays the correct contact email sourced from stack config. Story is independently testable.
 
@@ -108,11 +108,11 @@
 
 **Purpose**: CI/CD pipeline, documentation, and final validation
 
-- [ ] T026 [P] Create GitHub Actions deployment workflow (build image → push to registry → pulumi up) in .github/workflows/deploy.yml
-- [ ] T027 [P] Create GitHub Actions PR preview workflow (pulumi preview with PR comment) in .github/workflows/deploy.yml
-- [ ] T028 [P] Add .dockerignore in site/.dockerignore to exclude node_modules, .next, .git, and specs from Docker build context
-- [ ] T029 Add a root README.md with project overview, local development quickstart, and deployment instructions
-- [ ] T030 Verify all constitution principles are satisfied: no hardcoded env values (Principle IV), no framework boilerplate visible (Principle I), standalone Docker output (Principle II)
+- [x] T026 [P] Create GitHub Actions deployment workflow (build image → push to registry → pulumi up) in .github/workflows/deploy.yml
+- [x] T027 [P] Create GitHub Actions PR preview workflow (pulumi preview with PR comment) in .github/workflows/deploy.yml
+- [x] T028 [P] Add .dockerignore in site/.dockerignore to exclude node_modules, .next, .git, and specs from Docker build context
+- [x] T029 Add a root README.md with project overview, local development quickstart, and deployment instructions
+- [x] T030 Verify all constitution principles are satisfied: no hardcoded env values (Principle IV), no framework boilerplate visible (Principle I), standalone Docker output (Principle II)
 
 ---
 

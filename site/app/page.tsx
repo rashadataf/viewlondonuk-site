@@ -1,7 +1,10 @@
 const DEFAULT_CONTACT_EMAIL = "hello@viewlondonuk.com";
 
+// Read env vars at request time instead of baking the page at build time.
+export const dynamic = "force-dynamic";
+
 export default function Home() {
-  const contactEmail = process.env.CONTACT_EMAIL || DEFAULT_CONTACT_EMAIL;
+  const contactEmail = process.env.CONTACT_EMAIL?.trim() || DEFAULT_CONTACT_EMAIL;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-6 py-12 text-center">

@@ -5,6 +5,7 @@ runtime: yaml
 config:
   {
     "pulumi:autonaming": { value: { pattern: "${name}-${project}-${stack}" } },
+    "CORE_STACK_NAME": { type: "string" },
     "HTTP_PORT": { type: "string", default: "80" },
     "HTTPS_PORT": { type: "string", default: "443" },
     "DOMAIN_NAME": { type: "string", default: "localhost" },
@@ -25,6 +26,7 @@ config:
 
 variables:
   {
+    CORE_STACK_NAME: "${CORE_STACK_NAME}",
     HTTP_PORT: "${HTTP_PORT}",
     HTTPS_PORT: "${HTTPS_PORT}",
     DOMAIN_NAME: "${DOMAIN_NAME}",
@@ -42,70 +44,22 @@ variables:
     ROUTER_ENTRYPOINT: "${ROUTER_ENTRYPOINT}",
 
     FRONTEND_CONTAINER_NAME: "${pulumi.project}-viewlondonuk-${pulumi.stack}",
-    TRAEFIK_ALIAS: "traefik",
     APP_NETWORK_NAME: "${pulumi.project}-network",
+    MAIN_NETWORK_NAME: "${coreStack.outputs.appNetworkName}",
   }
 
 resources:
   {
+    coreStack:
+      {
+        type: "pulumi:pulumi:StackReference",
+        properties: { name: "${CORE_STACK_NAME}" },
+      },
     appNetwork:
       { type: "docker:Network", properties: { name: "${APP_NETWORK_NAME}" } },
 
-    traefikData:
-      {
-        type: "docker:Volume",
-        properties: { name: "traefik-data" },
-        options: { protect: true },
-      },
-
     nextBuildVolume:
       { type: "docker:Volume", properties: { name: "site_next_build" } },
-
-    traefikImage:
-      { type: "docker:RemoteImage", properties: { name: "traefik:v2.11" } },
-    traefik:
-      {
-        type: "docker:Container",
-        properties:
-          {
-            name: "${pulumi.project}-traefik-${pulumi.stack}",
-            image: "${traefikImage.imageId}",
-            restart: "always",
-            ports:
-              [
-                { internal: "${HTTP_PORT}", external: "${HTTP_PORT}" },
-                { internal: "${HTTPS_PORT}", external: "${HTTPS_PORT}" },
-                { internal: 8080, external: 8080 },
-              ],
-            envs:
-              [
-                "TRAEFIK_PROVIDERS_DOCKER=true",
-                "TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT=false",
-                "TRAEFIK_PROVIDERS_DOCKER_NETWORK=${APP_NETWORK_NAME}",
-                "TRAEFIK_ENTRYPOINTS_WEB_ADDRESS=:${HTTP_PORT}",
-                "TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS=:${HTTPS_PORT}",
-                "TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_EMAIL=${ADMIN_EMAIL}",
-                "TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_STORAGE=/data/acme.json",
-                "TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_HTTPCHALLENGE_ENTRYPOINT=web",
-              ],
-            mounts:
-              [
-                {
-                  type: "bind",
-                  source: "/var/run/docker.sock",
-                  target: "/var/run/docker.sock",
-                  readOnly: true,
-                },
-                {
-                  type: "volume",
-                  source: "${traefikData.name}",
-                  target: "/data",
-                },
-              ],
-            networksAdvanced:
-              [{ name: "${APP_NETWORK_NAME}", aliases: ["${TRAEFIK_ALIAS}"] }],
-          },
-      },
 
     siteImage:
       {
@@ -116,8 +70,7 @@ resources:
             build:
               {
                 context: "${SITE_BUILD_CONTEXT}",
-                buildArgs:
-                  { "SITE_WORKDIR_PATH": "${SITE_WORKDIR_PATH}" },
+                buildArgs: { "SITE_WORKDIR_PATH": "${SITE_WORKDIR_PATH}" },
                 target: "${SITE_BUILD_PHASE_TARGET}",
               },
           },
@@ -150,7 +103,11 @@ resources:
                   target: "${SITE_WORKDIR_PATH}/.next",
                 },
               ],
-            networksAdvanced: [{ name: "${APP_NETWORK_NAME}" }],
+            networksAdvanced:
+              [
+                { name: "${APP_NETWORK_NAME}" },
+                { name: "${MAIN_NETWORK_NAME}" },
+              ],
             labels:
               [
                 { label: "traefik.enable", value: "true" },
@@ -176,7 +133,6 @@ resources:
                 },
               ],
           },
-        options: { dependsOn: ["${traefik}"] },
       },
   }
 

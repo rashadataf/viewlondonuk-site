@@ -12,3 +12,4 @@ config:
   viewlondonuk:SITE_WORKDIR_PATH: /site
   viewlondonuk:SITE_BUILD_PHASE_TARGET: production
   viewlondonuk:CONTACT_EMAIL: contact@viewlondonuk.com
+  viewlondonuk:CORE_STACK_NAME: Rashad/portfolio-infra/prod

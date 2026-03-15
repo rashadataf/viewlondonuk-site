@@ -8,7 +8,6 @@ config:
   viewlondonuk:APP_PORT: "3010"
   viewlondonuk:ENABLE_TLS: "true"
   viewlondonuk:PROTOCOL: https
-  viewlondonuk:ROUTER_ENTRYPOINT: web
   viewlondonuk:SITE_WORKDIR_PATH: /site
   viewlondonuk:SITE_BUILD_PHASE_TARGET: production
   viewlondonuk:CORE_STACK_NAME: Rashad/portfolio-infra/prod

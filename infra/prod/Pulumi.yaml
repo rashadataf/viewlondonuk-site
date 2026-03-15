@@ -19,13 +19,14 @@ config:
 
   ENABLE_TLS: { type: boolean, default: true }
   PROTOCOL: { type: string, default: "https" }
-  ROUTER_ENTRYPOINT: { type: string, default: "web" }
 
   CORE_STACK_NAME: { type: string }
   CONTACT_EMAIL: { type: string, default: "" }
 
 variables:
   frontendContainerName: "${pulumi.project}-viewlondonuk-${pulumi.stack}"
+  ROUTER_ENTRYPOINT: "${coreStack.outputs.routerEntrypoint}"
+  WWW_DOMAIN_NAME: "www.${DOMAIN_NAME}"
 
 resources:
   coreStack:
@@ -71,7 +72,7 @@ resources:
         - { label: "traefik.enable", value: "true" }
         - { label: "traefik.http.services.site.loadbalancer.server.port", value: "${APP_PORT}" }
         - { label: "traefik.http.routers.site.entrypoints", value: "${ROUTER_ENTRYPOINT}" }
-        - { label: "traefik.http.routers.site.rule", value: "Host(`${DOMAIN_NAME}`)" }
+        - { label: "traefik.http.routers.site.rule", value: "Host(`${DOMAIN_NAME}`) || Host(`${WWW_DOMAIN_NAME}`)" }
         - { label: "traefik.http.routers.site.tls", value: "${ENABLE_TLS}" }
         - { label: "traefik.http.routers.site.tls.certresolver", value: "letsencrypt" }
 

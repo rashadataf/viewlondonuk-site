@@ -3,84 +3,123 @@ description: ViewLondon UK web infrastructure — prod (Next.js only on shared s
 runtime: yaml
 
 config:
-  pulumi:autonaming:
-    value:
-      pattern: "${name}-${project}-${stack}"
+  {
+    pulumi:autonaming: { value: { pattern: "${name}-${project}-${stack}" } },
 
-  DOMAIN_NAME: { type: string, default: "viewlondonuk.com" }
-  ADMIN_EMAIL: { type: string, secret: true }
+    DOMAIN_NAME: { type: string, default: "viewlondonuk.com" },
+    ADMIN_EMAIL: { type: string, secret: true },
 
-  SITE_IMAGE_NAME: { type: string, default: "viewlondonuk/site" }
-  APP_PORT: { type: string, default: "3010" }
-  SITE_BUILD_CONTEXT: { type: string, default: "../../site" }
-  SITE_WORKDIR_PATH: { type: string, default: "/site" }
-  SITE_IMAGE_TAG: { type: string, default: "latest" }
-  SITE_BUILD_PHASE_TARGET: { type: string, default: "production" }
+    SITE_IMAGE_NAME: { type: string, default: "viewlondonuk/site" },
+    APP_PORT: { type: string, default: "3010" },
+    SITE_BUILD_CONTEXT: { type: string, default: "../../site" },
+    SITE_WORKDIR_PATH: { type: string, default: "/site" },
+    SITE_IMAGE_TAG: { type: string, default: "latest" },
+    SITE_BUILD_PHASE_TARGET: { type: string, default: "production" },
 
-  ENABLE_TLS: { type: boolean, default: true }
-  PROTOCOL: { type: string, default: "https" }
+    ENABLE_TLS: { type: boolean, default: true },
+    PROTOCOL: { type: string, default: "https" },
 
-  CORE_STACK_NAME: { type: string }
-  CONTACT_EMAIL: { type: string, default: "" }
+    CORE_STACK_NAME: { type: string },
+    CONTACT_EMAIL: { type: string, default: "" },
+  }
 
 variables:
-  frontendContainerName: "${pulumi.project}-viewlondonuk-${pulumi.stack}"
-  ROUTER_ENTRYPOINT: "${coreStack.outputs.routerEntrypoint}"
-  WWW_DOMAIN_NAME: "www.${DOMAIN_NAME}"
+  {
+    frontendContainerName: "${pulumi.project}-viewlondonuk-${pulumi.stack}",
+    ROUTER_ENTRYPOINT: "${coreStack.outputs.routerEntrypoint}",
+    WWW_DOMAIN_NAME: "www.${DOMAIN_NAME}",
+  }
 
 resources:
-  coreStack:
-    type: pulumi:pulumi:StackReference
-    properties:
-      name: "${CORE_STACK_NAME}"
+  {
+    coreStack:
+      {
+        type: pulumi:pulumi:StackReference,
+        properties: { name: "${CORE_STACK_NAME}" },
+      },
 
-  nextBuildVolume:
-    type: docker:Volume
-    properties:
-      name: "site_next_build"
+    nextBuildVolume:
+      { type: docker:Volume, properties: { name: "site_next_build" } },
 
-  siteImage:
-    type: docker:RemoteImage
-    properties:
-      name: "${SITE_IMAGE_NAME}:${SITE_IMAGE_TAG}"
-      build:
-        context: "${SITE_BUILD_CONTEXT}"
-        buildArgs:
-          SITE_WORKDIR_PATH: "${SITE_WORKDIR_PATH}"
-        target: "${SITE_BUILD_PHASE_TARGET}"
+    siteImage:
+      {
+        type: docker:RemoteImage,
+        properties:
+          {
+            name: "${SITE_IMAGE_NAME}:${SITE_IMAGE_TAG}",
+            build:
+              {
+                context: "${SITE_BUILD_CONTEXT}",
+                buildArgs: { SITE_WORKDIR_PATH: "${SITE_WORKDIR_PATH}" },
+                target: "${SITE_BUILD_PHASE_TARGET}",
+              },
+          },
+      },
 
-  siteContainer:
-    type: docker:Container
-    properties:
-      name: "${frontendContainerName}"
-      image: "${siteImage.imageId}"
-      restart: always
-      envs:
-        - "PORT=${APP_PORT}"
-        - "DOMAIN_NAME=${DOMAIN_NAME}"
-        - "PROTOCOL=${PROTOCOL}"
-      mounts:
-        - type: bind
-          source: "${pulumi.cwd}/../../site"
-          target: "${SITE_WORKDIR_PATH}"
-        - type: volume
-          source: "${nextBuildVolume.name}"
-          target: "${SITE_WORKDIR_PATH}/.next"
-      networksAdvanced:
-        - name: "${coreStack.outputs.appNetworkName}"
-      labels:
-        - { label: "traefik.enable", value: "true" }
-        - { label: "traefik.http.services.site.loadbalancer.server.port", value: "${APP_PORT}" }
-        - { label: "traefik.http.routers.site.entrypoints", value: "${ROUTER_ENTRYPOINT}" }
-        - { label: "traefik.http.routers.site.rule", value: "Host(`${DOMAIN_NAME}`) || Host(`${WWW_DOMAIN_NAME}`)" }
-        - { label: "traefik.http.routers.site.tls", value: "${ENABLE_TLS}" }
-        - { label: "traefik.http.routers.site.tls.certresolver", value: "letsencrypt" }
+    siteContainer:
+      {
+        type: docker:Container,
+        properties:
+          {
+            name: "${frontendContainerName}",
+            image: "${siteImage.imageId}",
+            restart: always,
+            envs:
+              [
+                "PORT=${APP_PORT}",
+                "DOMAIN_NAME=${DOMAIN_NAME}",
+                "PROTOCOL=${PROTOCOL}",
+                "CONTACT_EMAIL=${CONTACT_EMAIL}",
+              ],
+            mounts:
+              [
+                {
+                  type: bind,
+                  source: "${pulumi.cwd}/../../site",
+                  target: "${SITE_WORKDIR_PATH}",
+                },
+                {
+                  type: volume,
+                  source: "${nextBuildVolume.name}",
+                  target: "${SITE_WORKDIR_PATH}/.next",
+                },
+              ],
+            networksAdvanced: [{ name: "${coreStack.outputs.appNetworkName}" }],
+            labels:
+              [
+                { label: "traefik.enable", value: "true" },
+                {
+                  label: "traefik.http.services.site.loadbalancer.server.port",
+                  value: "${APP_PORT}",
+                },
+                {
+                  label: "traefik.http.routers.site.entrypoints",
+                  value: "${ROUTER_ENTRYPOINT}",
+                },
+                {
+                  label: "traefik.http.routers.site.rule",
+                  value: "Host(`${DOMAIN_NAME}`) || Host(`${WWW_DOMAIN_NAME}`)",
+                },
+                {
+                  label: "traefik.http.routers.site.tls",
+                  value: "${ENABLE_TLS}",
+                },
+                {
+                  label: "traefik.http.routers.site.tls.certresolver",
+                  value: "letsencrypt",
+                },
+              ],
+          },
+      },
+  }
 
 packages: {}
 
 outputs:
-  siteHost: "${DOMAIN_NAME}"
-  appNetworkName: "${coreStack.outputs.appNetworkName}"
-  routerEntrypoint: "${ROUTER_ENTRYPOINT}"
-  enableTls: "${ENABLE_TLS}"
-  protocol: "${PROTOCOL}"
+  {
+    siteHost: "${DOMAIN_NAME}",
+    appNetworkName: "${coreStack.outputs.appNetworkName}",
+    routerEntrypoint: "${ROUTER_ENTRYPOINT}",
+    enableTls: "${ENABLE_TLS}",
+    protocol: "${PROTOCOL}",
+  }

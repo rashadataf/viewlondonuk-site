@@ -1,7 +1,7 @@
 config:
   viewlondonuk:DOMAIN_NAME: viewlondon.uk
   viewlondonuk:ADMIN_EMAIL:
-    secure: AAABACMZLZxOYLoPYysLNoWTO2rq0iOdJRSsKEMRU+2+YfQbZR+Jt22zqCJclQ6b662kbF4OY+8=
+    secure: AAABAPuthu0iRhtw/1ZmknhgqBEOIkfG1/FCibjooAJ6uQL4N1I+Kv1eiz/PiHjYAm/+y60=
   viewlondonuk:SITE_IMAGE_NAME: viewlondonuk/site
   viewlondonuk:SITE_BUILD_CONTEXT: ../../site
   viewlondonuk:SITE_IMAGE_TAG: latest

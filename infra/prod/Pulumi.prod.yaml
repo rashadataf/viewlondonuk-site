@@ -1,9 +1,9 @@
 config:
-  viewlondonuk:DOMAIN_NAME: viewlondonuk.com
+  viewlondonuk:DOMAIN_NAME: viewlondon.uk
   viewlondonuk:ADMIN_EMAIL:
     secure: AAABACMZLZxOYLoPYysLNoWTO2rq0iOdJRSsKEMRU+2+YfQbZR+Jt22zqCJclQ6b662kbF4OY+8=
   viewlondonuk:SITE_IMAGE_NAME: viewlondonuk/site
-  viewlondonuk:SITE_BUILD_CONTEXT: ../site
+  viewlondonuk:SITE_BUILD_CONTEXT: ../../site
   viewlondonuk:SITE_IMAGE_TAG: latest
   viewlondonuk:APP_PORT: "3010"
   viewlondonuk:ENABLE_TLS: "true"
@@ -11,9 +11,5 @@ config:
   viewlondonuk:ROUTER_ENTRYPOINT: web
   viewlondonuk:SITE_WORKDIR_PATH: /site
   viewlondonuk:SITE_BUILD_PHASE_TARGET: production
-  # Core infra stack to read shared network output from.
-  # Format: <org-or-user>/<project>/<stack>
   viewlondonuk:CORE_STACK_NAME: Rashad/portfolio-infra/prod
-  # Output key in the core stack that contains the Docker network name.
-  viewlondonuk:CORE_NETWORK_OUTPUT_KEY: appNetworkName
-  viewlondonuk:CONTACT_EMAIL: contact@viewlondonuk.com
+  viewlondonuk:CONTACT_EMAIL: contact@viewlondon.uk

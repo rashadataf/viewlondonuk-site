@@ -12,7 +12,7 @@ config:
     "ADMIN_EMAIL": { type: "string", secret: true },
 
     "SITE_IMAGE_NAME": { type: "string", default: "viewlondonuk/site" },
-    "APP_PORT": { type: "string", default: "3000" },
+    "APP_PORT": { type: "string", default: "3005" },
     "SITE_BUILD_CONTEXT": { type: "string", default: "../site" },
     "SITE_WORKDIR_PATH": { type: "string", default: "/site" },
     "SITE_IMAGE_TAG": { type: "string", default: "latest" },
@@ -112,6 +112,10 @@ resources:
               [
                 { label: "traefik.enable", value: "true" },
                 {
+                  label: "traefik.docker.network",
+                  value: "${MAIN_NETWORK_NAME}",
+                },
+                {
                   label: "traefik.http.services.site.loadbalancer.server.port",
                   value: "${APP_PORT}",
                 },
@@ -125,6 +129,18 @@ resources:
                 },
                 {
                   label: "traefik.http.routers.site.tls",
+                  value: "${ENABLE_TLS}",
+                },
+                {
+                  label: "traefik.http.routers.site-www.entrypoints",
+                  value: "${ROUTER_ENTRYPOINT}",
+                },
+                {
+                  label: "traefik.http.routers.site-www.rule",
+                  value: "Host(`www.${DOMAIN_NAME}`)",
+                },
+                {
+                  label: "traefik.http.routers.site-www.tls",
                   value: "${ENABLE_TLS}",
                 },
                 {

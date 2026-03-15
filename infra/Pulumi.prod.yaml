@@ -5,7 +5,7 @@ config:
   viewlondonuk:SITE_IMAGE_NAME: viewlondonuk/site
   viewlondonuk:SITE_BUILD_CONTEXT: ../site
   viewlondonuk:SITE_IMAGE_TAG: latest
-  viewlondonuk:APP_PORT: "3000"
+  viewlondonuk:APP_PORT: "3005"
   viewlondonuk:ENABLE_TLS: "true"
   viewlondonuk:PROTOCOL: https
   viewlondonuk:ROUTER_ENTRYPOINT: web

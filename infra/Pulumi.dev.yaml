@@ -1,7 +1,7 @@
 config:
   viewlondonuk:ADMIN_EMAIL:
     secure: AAABAIujaR0ZbqIyzVM9zlf0I9pF+vt0qajkRUhDO+731xSCTH+CzseGO/Gj4Zc1jW7XSA==
-  viewlondonuk:APP_PORT: "3000"
+  viewlondonuk:APP_PORT: "3010"
   viewlondonuk:DOMAIN_NAME: localhost
   viewlondonuk:ENABLE_TLS: "false"
   viewlondonuk:PROTOCOL: http

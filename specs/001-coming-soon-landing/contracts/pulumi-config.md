@@ -27,7 +27,7 @@ and optional config keys, their types, and validation rules.
 | Key | Type | Secret | Default | Description |
 |-----|------|--------|---------|-------------|
 | `viewlondonuk:buildTarget` | string | No | `production` | Docker build target (`development` or `production`) |
-| `viewlondonuk:sitePort` | integer | No | `3000` | Internal port Next.js listens on |
+| `viewlondonuk:sitePort` | integer | No | `3010` | Internal port Next.js listens on |
 | `viewlondonuk:imageTag` | string | No | `latest` | Docker image tag to deploy |
 
 ---
@@ -40,7 +40,7 @@ config:
   viewlondonuk:contactEmail: hello@viewlondonuk.com
   viewlondonuk:acmeEmail: admin@viewlondonuk.com
   viewlondonuk:buildTarget: production
-  viewlondonuk:sitePort: 3000
+  viewlondonuk:sitePort: 3010
   viewlondonuk:hostIp: 203.0.113.42
   viewlondonuk:sshUser: deploy
   viewlondonuk:sshPrivateKey:
@@ -55,7 +55,7 @@ config:
   viewlondonuk:contactEmail: dev@viewlondonuk.com
   viewlondonuk:acmeEmail: dev@viewlondonuk.com
   viewlondonuk:buildTarget: development
-  viewlondonuk:sitePort: 3000
+  viewlondonuk:sitePort: 3010
   viewlondonuk:hostIp: 127.0.0.1
   viewlondonuk:sshUser: dev
   viewlondonuk:sshPrivateKey:

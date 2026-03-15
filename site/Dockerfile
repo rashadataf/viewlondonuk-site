@@ -8,7 +8,6 @@ COPY . .
 # ── Development ──────────────────────────────────────────────────────────────
 FROM base AS development
 ENV NODE_ENV=development
-EXPOSE 3000
 CMD ["npm", "run", "dev"]
 
 # ── Production build ─────────────────────────────────────────────────────────
@@ -21,9 +20,10 @@ FROM node:22-alpine AS production
 WORKDIR /app
 ENV NODE_ENV=production
 
+COPY --from=base /app/package.json ./package.json
+COPY --from=base /app/node_modules ./node_modules
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/.next ./.next
 
-EXPOSE 3000
-CMD ["node", "server.js"]
+EXPOSE 3010
+CMD ["npm", "run", "start"]

@@ -1,0 +1,17 @@
+{
+  "name": "viewlondonuk-infra",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "ts-node": "^10",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@pulumi/pulumi": "^3.226.0",
+    "@pulumi/docker": "^4.11.1"
+  }
+}

@@ -22,7 +22,7 @@ Docker environment variables into the Next.js container.
 | `CONTACT_EMAIL` | string | `Pulumi.<stack>.yaml` | `hello@viewlondonuk.com` |
 | `ACME_EMAIL` | string | `Pulumi.<stack>.yaml` | `admin@viewlondonuk.com` |
 | `BUILD_TARGET` | enum(`development`, `production`) | `Pulumi.<stack>.yaml` | `production` |
-| `SITE_PORT` | integer | `Pulumi.<stack>.yaml` | `3000` |
+| `SITE_PORT` | integer | `Pulumi.<stack>.yaml` | `3010` |
 
 **Validation rules**:
 - `DOMAIN` must be a valid domain name (no protocol, no trailing slash).
